@@ -1,0 +1,89 @@
+Solucion 1
+class Producto:
+
+  def __init__(self, nombre, precio_inicial):
+    self.__nombre = nombre
+    self.__precios_historicos = []
+ 
+    self.precio = precio_inicial
+
+  @property
+  def precio(self):
+
+    if self.__precios_historicos:
+      return self.__precios_historicos[-1]
+    return 0
+
+  @precio.setter
+  def precio(self, nuevo_precio):
+
+    if 0 <= nuevo_precio <= 10000:
+      self.__precios_historicos.append(nuevo_precio)
+      print(f"Precio ${nuevo_precio} registrado exitosamente para {self.__nombre}.")
+    else:
+      print(
+          f"Advertencia: El precio ${nuevo_precio} no es válido. Debe estar"
+          " entre $0 y $10,000. No se guardó."
+      )
+
+  def calcular_precio_promedio(self):
+    if not self.__precios_historicos:
+      return 0
+    return sum(self.__precios_historicos) / len(self.__precios_historicos)
+
+  def ver_historial(self):
+    return self.__precios_historicos
+
+
+print("--- PRUEBA EJERCICIO 1 ---")
+p = Producto("Laptop", 5000)
+p.precio = 5500  
+p.precio = 12000  
+p.precio = -500  
+
+print("Historial de precios:", p.ver_historial())
+print(f"Precio promedio: ${p.calcular_precio_promedio():.2f}\n")
+Solucion 2
+
+class Envio:
+  def __init__(self, peso_kg, distancia_km):
+    self.peso_kg = peso_kg
+    self.distancia_km = distancia_km
+
+  def calcular_costo(self, monto_base):
+    return monto_base
+
+
+
+class EnvioEstandar(Envio):
+  def calcular_costo(self, monto_base):
+    return monto_base * 1.05
+
+
+
+class EnvioExpress(Envio):
+  def calcular_costo(self, monto_base):
+    return monto_base * 1.15
+
+
+print("--- PRUEBA EJERCICIO 2 ---")
+
+envios = [
+    EnvioEstandar(peso_kg=2.5, distancia_km=50),
+    EnvioExpress(peso_kg=1.2, distancia_km=120),
+    EnvioEstandar(peso_kg=5.0, distancia_km=15),
+    EnvioExpress(peso_kg=3.0, distancia_km=300),
+]
+
+monto_base_prueba = 100.0  
+
+
+for i, envio in enumerate(envios, 1):
+  tipo = (
+      "Estándar" if isinstance(envio, EnvioEstandar) else "Express"
+  )
+  costo_final = envio.calcular_costo(monto_base_prueba)
+  print(
+      f"Envío {i} ({tipo}) -> Peso: {envio.peso_kg}kg, Distancia:"
+      f" {envio.distancia_km}km | Costo Total: ${costo_final:.2f}"
+  )
